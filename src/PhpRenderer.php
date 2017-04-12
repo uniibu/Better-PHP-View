@@ -222,9 +222,7 @@ class PhpRenderer
         {
           $data = $this->escape($data,$escape);
         }
-        echo '<pre>';
-        echo print_r($data);
-        echo '</pre>';
+
          try {
             ob_start();
             $this->protectedIncludeScope($this->templatePath . $template, $data);
