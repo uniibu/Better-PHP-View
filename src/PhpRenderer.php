@@ -12,7 +12,6 @@
  * John Sayo - unibtc@gmail.com
 */
 namespace Slim\Views;
-
 use \InvalidArgumentException;
 use Psr\Http\Message\ResponseInterface;
 use \Zend\Escaper\Escaper;
@@ -28,17 +27,14 @@ class PhpRenderer
      * Zend Escaper
      */
     public $escaper;
-
     /**
      * @var string
      */
     protected $templatePath;
-
     /**
      * @var array
      */
     protected $attributes;
-
     /**
      * SlimRenderer constructor.
      *
@@ -51,7 +47,6 @@ class PhpRenderer
         $this->attributes = $attributes;
         $this->escaper = new \Zend\Escaper\Escaper('utf-8');
     }
-
     /**
      * Render a template
      *
@@ -70,13 +65,14 @@ class PhpRenderer
      */
     public function render(ResponseInterface $response, $template, $data = [], $escape = null)
     {
-        $output = $this->fetch($template, $data, $escape);
+       ob_start();
+       $output = $this->fetch($template, $data, $escape);
+       ob_end_clean();
 
-        $response->getBody()->write($output);
+       $response->getBody()->write($output);
 
-        return $response;
+       return $response;
     }
-
     /**
      * Get the attributes for the renderer
      *
@@ -86,7 +82,6 @@ class PhpRenderer
     {
         return $this->attributes;
     }
-
     /**
      * Set the attributes for the renderer
      *
@@ -96,7 +91,6 @@ class PhpRenderer
     {
         $this->attributes = $attributes;
     }
-
     /**
      * Add an attribute
      *
@@ -106,7 +100,6 @@ class PhpRenderer
     public function addAttribute($key, $value) {
         $this->attributes[$key] = $value;
     }
-
     /**
      * Retrieve an attribute
      *
@@ -117,10 +110,8 @@ class PhpRenderer
         if (!isset($this->attributes[$key])) {
             return false;
         }
-
         return $this->attributes[$key];
     }
-
     /**
      * Get the template path
      *
@@ -130,7 +121,6 @@ class PhpRenderer
     {
         return $this->templatePath;
     }
-
     /**
      * Set the template path
      *
@@ -140,10 +130,8 @@ class PhpRenderer
     {
         $this->templatePath = rtrim($templatePath, '/\\') . '/';
     }
-
     public function escape($toescape,$type)
     {
-
         $arrHolder = array();
         foreach ($toescape as $key => $value) {
             $newarr = array();
@@ -171,15 +159,11 @@ class PhpRenderer
                           return $toescape;
                            break;
                     }
-
             }
            $arrHolder[$key] = $newarr;
-
         }
-
         return $arrHolder;
     }
-
     /**
      * Renders a template and returns the result as a string
      *
@@ -199,19 +183,15 @@ class PhpRenderer
         if (isset($data['template'])) {
             throw new \InvalidArgumentException("Duplicate template key found");
         }
-
         if (!is_file($this->templatePath . $template)) {
             throw new \RuntimeException("View cannot render `$template` because the template does not exist");
         }
-
         $data = array_merge($this->attributes, $data);
-
         /**
          * Expose the merge data to $this->attributes
          * so that it is available via getAttribute/s
          */
         $this->attributes = $data;
-
         /**
          * escape data attributes before sending to page
          * Note: this will escape all values on an associative
@@ -222,29 +202,21 @@ class PhpRenderer
         {
           $data = $this->escape($data,$escape);
         }
-
          try {
-            ob_start();
             $this->protectedIncludeScope($this->templatePath . $template, $data);
             $output = ob_get_contents();
-        } finally {
+        } catch(\Throwable $e) { // PHP 7+
             ob_end_clean();
+            throw $e;
+        } catch(\Exception $e) { // PHP < 7
+            ob_end_clean();
+            throw $e;
         }
 
         return $output;
+
     }
 
-    /**
-     * Includes any template before rendering
-     * NOTE: all attributes are also exposed to their
-     * child templates
-     *
-     * @param string $template
-     * @param array $template
-     */
-    public function include ($template) {
-        return include $this->templatePath.$template;
-    }
     /**
      * @param string $template
      * @param array $data
