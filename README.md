@@ -61,9 +61,13 @@ $response = $phpView->render(new Response(), "/path/to/template.php", $yourData,
 ## Escaping Options (this version) check https://github.com/zendframework/zend-escaper for reference
 
 > 'html' = zend->escapeHtml
+
 > 'attr' = zend->escapeHtmlAttr
+
 > 'url' = zend->escapeUrl
+
 > 'js' = zend->escapeJs
+
 > 'css' = zend->escapeCss
 
 ## Template Variables (this version)
