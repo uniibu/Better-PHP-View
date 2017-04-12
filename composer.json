@@ -18,6 +18,7 @@
       "url": "https://github.com/uniibu/Better-PHP-View.git"
     }
   ],
+  "minimum-stability": "dev",
   "require": {
     "psr/http-message": "^1.0",
     "zendframework/zend-escaper": "^2.5.2"
