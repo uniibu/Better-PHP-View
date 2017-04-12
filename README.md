@@ -7,9 +7,13 @@ This is a renderer for rendering PHP view scripts into a PSR-7 Response object. 
 ## This Version
 
 This version is a fork from the original PHP-view https://github.com/slimphp/PHP-View
+
 This version also adds optional escaping using zend-escaper (https://github.com/zendframework/zend-escaper) and the ability to include other views using $PHPview->include('TEMPLATE NAME');
+
 Included templates must reside on the same template directory.
+
 To use the escape function, just add the type of escaping when calling $PHPview->render ex. $PHPview->render($response,'template.php',['args' => 'value'],'html')
+
 If escape type is left out, nothing will be escaped. It will only escape the values of the associative arrays.
 
 ### Cross-site scripting (XSS) risks (optional on this version)
@@ -25,7 +29,7 @@ You may use `$this` inside your php templates. `$this` will be the actual PhpRen
 
 Install with [Composer](http://getcomposer.org):
 
-    composer require uniibu/better-php-view
+    composer require uniibu/better-php-view:dev-master
 
 
 ## Usage with Slim 3 (this version)

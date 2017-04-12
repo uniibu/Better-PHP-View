@@ -12,6 +12,12 @@
       "email-contributor": "unibtc@gmail.com"
     }
   ],
+  "repositories": [
+    {
+      "type": "vcs",
+      "url": "https://github.com/uniibu/Better-PHP-View.git"
+    }
+  ],
   "require": {
     "psr/http-message": "^1.0",
     "zendframework/zend-escaper": "^2.5.2"
