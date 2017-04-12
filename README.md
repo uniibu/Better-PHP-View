@@ -8,9 +8,11 @@ This is a renderer for rendering PHP view scripts into a PSR-7 Response object. 
 
 This version is a fork from the original PHP-view https://github.com/slimphp/PHP-View
 
-This version also adds optional escaping using zend-escaper (https://github.com/zendframework/zend-escaper) and the ability to include other views using $PHPview->include('TEMPLATE NAME');
+This version also adds optional escaping using zend-escaper (https://github.com/zendframework/zend-escaper) and the ability to include other views using $PHPview->fetch('TEMPLATE NAME');
 
 Included templates must reside on the same template directory.
+
+Included templates also has access to the attributes passed on the main template.
 
 To use the escape function, just add the type of escaping when calling $PHPview->render ex. $PHPview->render($response,'template.php',['args' => 'value'],'html')
 
